@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="..\..\..\Templates\Specification Style.xsl"?>
+
+<Specification>
+	<Element SpecNum = "Specification Number"/>
+	<Element Created = "" />
+	<Element Title = "Please enter a title"/>
+	<Element SpecDesc = "Please enter a description"/>
+</Specification>

@@ -1,0 +1,70 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE xml [
+  <!ELEMENT xml (transactions)>
+    <!ATTLIST xml ignored (-1|0) "0">
+    <!ELEMENT transactions (transaction)+>
+      <!ELEMENT transaction (document|notification|list|serial_number)+>
+        <!ATTLIST transaction type (wf_import_document_attributes|import_notifications|import_lists|import_serial_numbers) #REQUIRED>
+        <!ATTLIST transaction date CDATA #REQUIRED>       <!-- Seconds since 1 Jan 1970 00:00 -->
+        <!ATTLIST transaction ignored (-1|0) "0">
+        <!ATTLIST transaction vaultname CDATA #REQUIRED>
+
+      <!ELEMENT document (configuration*)>
+        <!ATTLIST document aliasset CDATA "">             <!-- The name of an alias set to use when looking up the name of the children attribute nodes. May be "". No newlines allowed and name is trimmed. -->
+        <!ATTLIST document id CDATA #REQUIRED>            <!-- A value (newlines kept, trailin/leading spaces are not trimmed) that we use for finding matching documents. The value is looked up for the (optional) configuration and variable name given in "idattribute" -->
+        <!ATTLIST document idattribute CDATA #REQUIRED>   <!-- An existing variable name that is used to match the "id" with -->
+        <!ATTLIST document idcfgname CDATA "">            <!-- Configuration name we use when looking up documents that match "id". Empty means any configuration -->
+        <!ATTLIST document pdmweid CDATA "0">             <!-- The internal DocumentID of PDMWE. -->
+          <!ELEMENT configuration (attribute*, references*, whereused*)>
+            <!ATTLIST configuration name CDATA "">        <!-- Name of the configuration. May be empty for files without configurations. For import empty means "all". -->
+            <!ATTLIST configuration active (-1|0) "0">    <!-- Is the configuration referring to the active one? -->
+            <!ATTLIST configuration quantity CDATA "0">   <!-- The quantity of this document. Ignored during import. Exported if "Show quantity" option is set for the export script. -->
+            <!ELEMENT attribute EMPTY>
+              <!ATTLIST attribute name CDATA #REQUIRED>
+              <!ATTLIST attribute value CDATA #REQUIRED>
+            <!ELEMENT references (document)*>
+            <!ELEMENT whereused (document)*>
+
+          
+      <!ELEMENT notification (recipient+)>
+        <!ATTLIST notification sender CDATA #REQUIRED>
+        <!ATTLIST notification subject CDATA #REQUIRED>
+        <!ATTLIST notification message CDATA #REQUIRED>
+        <!ELEMENT recipient EMPTY>
+          <!ATTLIST recipient user_login CDATA "">
+          <!ATTLIST recipient user_name CDATA "">
+          <!ATTLIST recipient group_name CDATA "">
+
+      <!ELEMENT list (item+,link*)>
+        <!ATTLIST list name CDATA #REQUIRED>
+        <!ELEMENT item EMPTY>
+          <!ATTLIST item item_name CDATA #REQUIRED>
+        <!ELEMENT link EMPTY>
+          <!ATTLIST link source_variable CDATA #REQUIRED>
+          <!ATTLIST link list_variable CDATA #REQUIRED>
+          <!ATTLIST link link_value CDATA #REQUIRED>
+
+      <!ELEMENT serial_number (serno_item+)>
+        <!ATTLIST serial_number name CDATA #REQUIRED>
+        <!ATTLIST serial_number mode (append|replace) "replace">
+        <!ELEMENT serno_item EMPTY>
+        <!ATTLIST serno_item item_value CDATA #REQUIRED>
+          <!ATTLIST serno_item item_counter CDATA #REQUIRED>
+
+]>
+<!--To use the dtd in an external file: <!DOCTYPE xml SYSTEM "transactions.dtd">-->
+<xml ignored="0">
+  <transactions>
+    <transaction type="import_lists" date="123459" vaultname="ACME" ignored="0">
+      <!-- A simple list without links -->
+      <list name="Cities">
+        <item item_name="Boston" />
+        <item item_name="Concord" />
+        <item item_name="Cambridge" />
+        <item item_name="Munich" />
+        <item item_name="Vitrolles" />
+        <item item_name="Tokyo" />
+      </list>
+    </transaction>
+  </transactions>
+</xml>
